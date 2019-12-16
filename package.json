@@ -1,6 +1,6 @@
 {
   "name": "@eportela/glib",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A powerful tools library",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/ezeportela/glib#readme",
   "dependencies": {
+    "ioredis": "^4.14.1",
     "jwt-decode": "2.2.0",
+    "lodash": "^4.17.15",
     "moment": "2.24.0"
   },
   "devDependencies": {

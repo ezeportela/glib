@@ -1,5 +1,5 @@
 const getError = (err) => {
-  const errorCodes = require('../src/infrastructure/dictionaries/error.codes.json');
+  const errorCodes = require('../src/infrastructure/dictionaries/error.codes.json.js');
   const row =
     errorCodes.errors.filter((error) =>
       error.code === err.code)[0];
