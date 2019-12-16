@@ -1,0 +1,38 @@
+{
+  "name": "@eportela/glib",
+  "version": "0.0.1",
+  "description": "A powerful tools library",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezeportela/glib.git"
+  },
+  "keywords": [
+    "powerful",
+    "tools",
+    "library"
+  ],
+  "author": "Ezequiel Portela <eportelab@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ezeportela/glib/issues"
+  },
+  "homepage": "https://github.com/ezeportela/glib#readme",
+  "dependencies": {
+    "jwt-decode": "2.2.0",
+    "moment": "2.24.0"
+  },
+  "devDependencies": {
+    "eslint": "6.6.0",
+    "eslint-config-google": "0.14.0",
+    "jest": "24.9.0"
+  },
+  "engines": {
+    "node": "<=8.11.4",
+    "npm": "<=5.6.0"
+  }
+}
