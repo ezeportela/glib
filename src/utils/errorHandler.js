@@ -1,5 +1,7 @@
+const requireDependency = require('./requireDependency');
+
 const getError = (err) => {
-  const errorCodes = require('../src/infrastructure/dictionaries/error.codes.json.js');
+  const errorCodes = requireDependency('/config/error.codes.json');
   const row =
     errorCodes.errors.filter((error) =>
       error.code === err.code)[0];

@@ -1,7 +1,7 @@
 const jwtDecode = require('jwt-decode');
-const {createError, errorHandler} = require('../../../lib/errorHandler');
+const {createError, errorHandler} = require('../utils/errorHandler');
 
-const validateTokenIdentity = (check, col, cols) =>
+const validateToken = (check, col, cols, pipe = (text) => text) =>
   (req, res, next) => {
     try {
       const token = req.headers.authorization;
@@ -9,7 +9,7 @@ const validateTokenIdentity = (check, col, cols) =>
 
       if (decoded.gty === 'client-credentials') return next();
 
-      if (!cols.some((_col) => decoded[_col] === `auth0|${req[check][col]}`)) createError('unauthorized');
+      if (!cols.some((_col) => decoded[_col] === pipe(req[check][col]))) createError('unauthorized');
 
       next();
     } catch (err) {
@@ -17,4 +17,4 @@ const validateTokenIdentity = (check, col, cols) =>
     }
   };
 
-module.exports = validateTokenIdentity;
+module.exports = validateToken;
