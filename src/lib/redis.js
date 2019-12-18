@@ -2,18 +2,22 @@ const Redis = require('ioredis');
 const {parseJSON} = require('../utils/conversions');
 const _ = require('lodash');
 
-const getValue = (key, connection) => {
+const newInstance = (connection) => {
   const redis = new Redis(connection);
-  return redis.get(key);
+
+  const getValue = (key) => redis.get(key);
+
+  const fn = {
+    getValue,
+
+    getValueJSON: async (key) => {
+      const result = await getValue(key);
+      if (_.isEmpty(result)) return null;
+      return parseJSON(result);
+    },
+  };
+
+  return fn;
 };
 
-const getValueJSON = async (key, connection) => {
-  const result = await getValue(key, connection);
-  if (_.isEmpty(result)) return null;
-  return parseJSON(result);
-};
-
-module.exports = {
-  getValue,
-  getValueJSON,
-};
+module.exports = newInstance;
