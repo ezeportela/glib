@@ -17,7 +17,7 @@ const createError = (code) => {
   throw error;
 };
 
-const errorHandler = (err, defaultError) => {
+const handleError = (err, defaultError) => {
   if (err.statusCode == 401) err.code = 'unauthorized';
 
   if (!err.code) err.code = defaultError;
@@ -38,6 +38,6 @@ const resolveError = (err, res) => {
 
 module.exports = {
   createError,
-  errorHandler,
+  handleError,
   resolveError,
 };
