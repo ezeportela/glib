@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const validateToken = require('../../src/middlewares/validateToken');
+const validateToken = require('../../src/middlewares/validateTokenProps');
 
 const createReqMock = (payload) => {
   const token = jwt.sign({gty: 'client-credentials'}, 'test');

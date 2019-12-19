@@ -1,7 +1,7 @@
 const jwtDecode = require('jwt-decode');
 const {createError, errorHandler} = require('../utils/errorHandler');
 
-const validateToken = (check, col, cols, pipe = (text) => text) =>
+const validateTokenProps = (check, col, cols, pipe = (text) => text) =>
   (req, res, next) => {
     try {
       const token = req.headers.authorization;
@@ -17,4 +17,4 @@ const validateToken = (check, col, cols, pipe = (text) => text) =>
     }
   };
 
-module.exports = validateToken;
+module.exports = validateTokenProps;

@@ -1,13 +1,13 @@
 {
   "name": "@eportela/glib",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A powerful tools library",
   "main": "index.js",
   "scripts": {
     "test": "mocha --exit --recursive --require ./scripts/mocha-bootload.js",
     "coverage": "nyc --reporter=text mocha --exit --recursive --require ./scripts/mocha-bootload.js",
-    "lint": "eslint src/ __test__/;",
-    "lint-fix": "eslint --fix src/ __test__/"
+    "lint": "eslint src/ test/;",
+    "lint-fix": "eslint --fix src/ test/"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,6 @@
     "chai": "4.2.0",
     "eslint": "6.6.0",
     "eslint-config-google": "0.14.0",
-    "jest": "24.9.0",
     "jsonwebtoken": "^8.5.1",
     "mocha": "6.2.2",
     "nyc": "14.1.1",

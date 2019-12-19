@@ -1,46 +1,13 @@
 const fs = require('fs');
 const jsYaml = require('js-yaml');
 
-const getCurrentDirectoryBase = () => process.env.PWD;
+const getRelativeFilePath = (filepath) => `${__dirname}/${filepath}`;
 
-const getFilePath = (filepath) => `${getCurrentDirectoryBase()}${filepath}`;
+const readFile = (filepath) => fs.readFileSync(filepath, 'utf8');
 
-const _getRelativeFilePath = (filepath) => `${__dirname}/${filepath}`;
+const readYamlFile = (filepath) => jsYaml.safeLoad(filepath);
 
-const _readFile = (filepath) => fs.readFileSync(filepath, 'utf8');
-
-const readRelativeFile = (filepath) =>
-  _readFile(_getRelativeFilePath(filepath));
-
-const readFile = (filepath) => _readFile(getFilePath(filepath));
-
-const writeFile = (filepath, content) =>
-  fs.writeFileSync(getFilePath(filepath), content);
-
-const readJsonFile = (filepath) => JSON.parse(readFile(filepath));
-
-const _readYamlFile = (filepath) => jsYaml.safeLoad(filepath);
-
-const readYamlFile = (filepath) => _readYamlFile(readFile(filepath));
-
-const readYamlRelativeFile = (filepath) =>
-  _readYamlFile(readRelativeFile(filepath));
-
-const writeJsonFile = (filepath, content) =>
-  writeFile(filepath, JSON.stringify(content, null, 2));
-
-const writeYamlFile = (filepath, content) => {
-  const result = jsYaml.safeDump(content);
-  writeFile(filepath, result);
-};
-
-const requireDependency = (filepath) => require(getFilePath(filepath));
-
-const existsFile = (filepath) => fs.existsSync(getFilePath(filepath));
-
-const makeDir = (dir) => fs.mkdirSync(getFilePath(dir));
-
-const _readDir = (dir) => new Promise((resolve, reject) =>
+const readDir = (dir) => new Promise((resolve, reject) =>
   fs.readdir(dir, (err, files) => {
     if (err) return reject(err);
 
@@ -48,24 +15,63 @@ const _readDir = (dir) => new Promise((resolve, reject) =>
   }),
 );
 
-const readDir = (dir) => _readDir(getFilePath(dir));
+class Files {
+  getCurrentDirectoryBase() {
+    return process.env.PWD;
+  }
 
-const readRelativeDir = (dir) => _readDir(_getRelativeFilePath(dir));
+  getFilePath(filepath) {
+    return `${this.getCurrentDirectoryBase()}${filepath}`;
+  }
 
-module.exports = {
-  getCurrentDirectoryBase,
-  getFilePath,
-  readRelativeFile,
-  readFile,
-  readJsonFile,
-  readYamlFile,
-  readYamlRelativeFile,
-  writeFile,
-  writeJsonFile,
-  writeYamlFile,
-  requireDependency,
-  existsFile,
-  makeDir,
-  readDir,
-  readRelativeDir,
-};
+  readRelativeFile(filepath) {
+    return readFile(getRelativeFilePath(filepath));
+  }
+
+  readFile(filepath) {
+    return readFile(this.getFilePath(filepath));
+  }
+
+  writeFile(filepath, content) {
+    fs.writeFileSync(this.getFilePath(filepath), content);
+  }
+
+  readJsonFile(filepath) {
+    return JSON.parse(this.readFile(filepath));
+  }
+
+  readYamlFile(filepath) {
+    return readYamlFile(this.readFile(filepath));
+  }
+
+  readYamlRelativeFile(filepath) {
+    return readYamlFile(this.readRelativeFile(filepath));
+  }
+
+  writeJsonFile(filepath, content) {
+    return this.writeFile(filepath, JSON.stringify(content, null, 2));
+  }
+
+  writeYamlFile(filepath, content) {
+    const result = jsYaml.safeDump(content);
+    return this.writeFile(filepath, result);
+  }
+
+  existsFile(filepath) {
+    fs.existsSync(this.getFilePath(filepath));
+  }
+
+  makeDir(dir) {
+    fs.mkdirSync(this.getFilePath(dir));
+  }
+
+  readDir(dir) {
+    return readDir(this.getFilePath(dir));
+  }
+
+  readRelativeDir(dir) {
+    return readDir(this.getRelativeFilePath(dir));
+  }
+}
+
+module.exports = new Files();
