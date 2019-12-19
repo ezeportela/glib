@@ -1,3 +1,3 @@
-const timespent = require('../src/utils/timespent');
+const Timespent = require('../src/utils/timespent');
 
-module.exports = timespent;
+module.exports = Timespent;
