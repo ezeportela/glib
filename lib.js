@@ -1,4 +1,4 @@
-const redis = require('../src/lib/redis');
+const redis = require('./src/lib/redis');
 
 module.exports = {
   redis,
