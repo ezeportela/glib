@@ -9,6 +9,6 @@ const createReqMock = (payload) => {
 describe('test utils validateToken', () => {
   it('Token B2B', () => {
     const result = validateToken('params', 'test', ['id'])(createReqMock({gty: 'client-credentials'}), null, () => {});
-    console.log('the result is', result);
+    console.log(result);
   });
 });
