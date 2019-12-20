@@ -36,7 +36,6 @@ const cache = (collection) => {
 
       const pattern = RegExp(`${collection}_.*`, 'g');
       if (key.match(pattern)) {
-        console.log('key to remove', key);
         removeItem(key, true);
       }
     }
