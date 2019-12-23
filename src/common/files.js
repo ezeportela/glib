@@ -15,6 +15,10 @@ const readDir = (dir) => new Promise((resolve, reject) =>
   }),
 );
 
+const existsFile = (filepath) => fs.existsSync(filepath);
+
+const removeFile = (filepath) => fs.unlinkSync(filepath);
+
 class Files {
   getCurrentDirectoryBase() {
     return process.env.PWD;
@@ -58,11 +62,23 @@ class Files {
   }
 
   existsFile(filepath) {
-    fs.existsSync(this.getFilePath(filepath));
+    return existsFile(this.getFilePath(filepath));
+  }
+
+  existsRelativeFile(filepath) {
+    return existsFile(this.getRelativeFilePath(filepath));
+  }
+
+  removeFile(filepath) {
+    return removeFile(this.getFilePath(filepath));
+  }
+
+  removeRelativeFile(filepath) {
+    return removeFile(this.getRelativeFilePath(filepath));
   }
 
   makeDir(dir) {
-    fs.mkdirSync(this.getFilePath(dir));
+    return fs.mkdirSync(this.getFilePath(dir));
   }
 
   readDir(dir) {
