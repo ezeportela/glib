@@ -6,7 +6,7 @@ const createReqMock = (payload) => {
   return {headers: {authorization: token}};
 };
 
-describe('test utils validateToken', () => {
+describe('test utils > validateTokenProps', () => {
   it('Token B2B', () => {
     const result = validateToken('params', 'test', ['id'])(createReqMock({gty: 'client-credentials'}), null, () => {});
     console.log(result);

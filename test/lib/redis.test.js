@@ -4,7 +4,7 @@ const redis = proxyquire('../../src/lib/redis', {
   'ioredis': require('../mocks/ioredis.mock'),
 });
 
-describe('test redis lib', () => {
+describe('test lib > redis', () => {
   it('test get value', (done) => {
     redis().getValue('ping')
       .then((result) => {

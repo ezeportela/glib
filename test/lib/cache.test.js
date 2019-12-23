@@ -1,6 +1,6 @@
 const cache = require('../../src/lib/cache');
 
-describe('test cache lib', () => {
+describe('test lib > cache', () => {
   it('test get value', (done) => {
     const expected = 'one';
     const testCache = cache('test');
