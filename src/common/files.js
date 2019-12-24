@@ -1,92 +1,71 @@
 const fs = require('fs');
 const jsYaml = require('js-yaml');
 
-const getRelativeFilePath = (filepath) => `${__dirname}/${filepath}`;
-
-const readFile = (filepath) => fs.readFileSync(filepath, 'utf8');
-
-const readYamlFile = (filepath) => jsYaml.safeLoad(filepath);
-
-const readDir = (dir) => new Promise((resolve, reject) =>
-  fs.readdir(dir, (err, files) => {
-    if (err) return reject(err);
-
-    return resolve(files);
-  }),
-);
-
-const existsFile = (filepath) => fs.existsSync(filepath);
-
-const removeFile = (filepath) => fs.unlinkSync(filepath);
+const defaultOptions = {fullPath: true};
+const defaultFullOptions = {fullPath: true, format: 'plain'};
 
 class Files {
-  getCurrentDirectoryBase() {
-    return process.env.PWD;
+  getFilePath(path, fullPath = true) {
+    return (fullPath ? process.env.PWD : __dirname).concat(path);
   }
 
-  getFilePath(filepath) {
-    return `${this.getCurrentDirectoryBase()}${filepath}`;
+  readFile(path, {fullPath, format} = defaultFullOptions) {
+    const file = fs.readFileSync(this.getFilePath(path, fullPath), 'utf8');
+
+    let content = '';
+    switch (format) {
+    case 'plain':
+      content = file;
+      break;
+    case 'json':
+      content = JSON.parse(file);
+      break;
+    case 'yaml':
+      content = jsYaml.safeLoad(file);
+      break;
+    default:
+      throw new Error('The format specified is unknown');
+    }
+
+    return content;
   }
 
-  readRelativeFile(filepath) {
-    return readFile(getRelativeFilePath(filepath));
+  writeFile(path, content, {fullPath, format} = defaultFullOptions) {
+    const filepath = this.getFilePath(path, fullPath);
+    const _writeFile = (content) => fs.writeFileSync(filepath, content);
+
+    switch (format) {
+    case 'plain':
+      return _writeFile(content);
+    case 'json':
+      return _writeFile(JSON.stringify(content, null, 2));
+    case 'yaml': {
+      const _content = jsYaml.safeDump(content);
+      return _writeFile(_content);
+    }
+    default:
+      throw new Error('The format specified is unknown');
+    }
   }
 
-  readFile(filepath) {
-    return readFile(this.getFilePath(filepath));
+  existsFile(path, {fullPath} = defaultOptions) {
+    return fs.existsSync(this.getFilePath(path, fullPath));
   }
 
-  writeFile(filepath, content) {
-    fs.writeFileSync(this.getFilePath(filepath), content);
+  removeFile(path, {fullPath} = defaultOptions) {
+    return fs.unlinkSync(this.getFilePath(path, fullPath));
   }
 
-  readJsonFile(filepath) {
-    return JSON.parse(this.readFile(filepath));
+  makeDir(dir, {fullPath} = defaultOptions) {
+    return fs.mkdirSync(this.getFilePath(dir, fullPath));
   }
 
-  readYamlFile(filepath) {
-    return readYamlFile(this.readFile(filepath));
+  readDir(dir, {fullPath} = defaultOptions) {
+    return fs.readdirSync(this.getFilePath(dir, fullPath));
   }
 
-  readYamlRelativeFile(filepath) {
-    return readYamlFile(this.readRelativeFile(filepath));
-  }
-
-  writeJsonFile(filepath, content) {
-    return this.writeFile(filepath, JSON.stringify(content, null, 2));
-  }
-
-  writeYamlFile(filepath, content) {
-    const result = jsYaml.safeDump(content);
-    return this.writeFile(filepath, result);
-  }
-
-  existsFile(filepath) {
-    return existsFile(this.getFilePath(filepath));
-  }
-
-  existsRelativeFile(filepath) {
-    return existsFile(this.getRelativeFilePath(filepath));
-  }
-
-  removeFile(filepath) {
-    return removeFile(this.getFilePath(filepath));
-  }
-
-  removeRelativeFile(filepath) {
-    return removeFile(this.getRelativeFilePath(filepath));
-  }
-
-  makeDir(dir) {
-    return fs.mkdirSync(this.getFilePath(dir));
-  }
-
-  readDir(dir) {
-    return readDir(this.getFilePath(dir));
-  }
-
-  readRelativeDir(dir) {
-    return readDir(this.getRelativeFilePath(dir));
+  removeDir(dir, {fullPath} = defaultOptions) {
+    return fs.rmdirSync(this.getFilePath(dir, fullPath));
   }
 }
 
