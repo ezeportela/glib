@@ -1,5 +1,5 @@
 const jwtDecode = require('jwt-decode');
-const {createError, errorHandler} = require('../utils/errorHandler');
+const {createError, handleError} = require('../utils/errorHandler');
 
 const validateTokenProps = (check, col, cols, pipe = (text) => text) =>
   (req, res, next) => {
@@ -11,9 +11,9 @@ const validateTokenProps = (check, col, cols, pipe = (text) => text) =>
 
       if (!cols.some((_col) => decoded[_col] === pipe(req[check][col]))) createError('unauthorized');
 
-      next();
+      return next();
     } catch (err) {
-      errorHandler(err);
+      handleError(err);
     }
   };
 
