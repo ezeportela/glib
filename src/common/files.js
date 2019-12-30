@@ -24,7 +24,7 @@ class Files {
       content = jsYaml.safeLoad(file);
       break;
     default:
-      throw new Error('The format specified is unknown');
+      throw new Error('Invalid format');
     }
 
     return content;
@@ -44,7 +44,7 @@ class Files {
       return _writeFile(_content);
     }
     default:
-      throw new Error('The format specified is unknown');
+      throw new Error('Invalid format');
     }
   }
 

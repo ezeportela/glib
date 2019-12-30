@@ -6,7 +6,7 @@ const redis = proxyquire('../../src/lib/redis', {
 
 describe('test lib > redis', () => {
   it('test get value', (done) => {
-    redis().getValue('ping')
+    redis().getItem('ping')
       .then((result) => {
         const expected = 'pong';
         expect(result).eql(expected);
@@ -18,7 +18,7 @@ describe('test lib > redis', () => {
   });
 
   it('test get value json', (done) => {
-    redis().getValueJSON('test')
+    redis().getItem('test', 'json')
       .then((result) => {
         const expected = {
           name: 'Ezequiel',
@@ -34,13 +34,25 @@ describe('test lib > redis', () => {
   });
 
   it('test get value json null value', (done) => {
-    redis().getValueJSON('subscription')
+    redis().getItem('subscription', 'json')
       .then((result) => {
         expect(result).to.be.null;
         done();
       })
       .catch((error) => {
         done(error);
+      });
+  });
+
+  it('test get value invalid format', (done) => {
+    redis().getItem('test', 'csv')
+      .then((result) => {
+        done('error: the format is invalid');
+      })
+      .catch((error) => {
+        console.log('pass here');
+        expect(error.message).to.eql('Invalid format');
+        done();
       });
   });
 });

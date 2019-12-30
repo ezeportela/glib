@@ -65,9 +65,9 @@ describe('test common > files', () => {
   it('test read file throw an error', (done) => {
     try {
       files.readFile(paths.plainSrc, {format: 'csv'});
-      done();
+      done('error: the format is invalid');
     } catch (err) {
-      expect(err.message).to.eql('The format specified is unknown');
+      expect(err.message).to.eql('Invalid format');
       done();
     }
   });
@@ -75,9 +75,9 @@ describe('test common > files', () => {
   it('test write file throw an error', (done) => {
     try {
       files.writeFile(paths.plainSrc, 'pong', {format: 'csv'});
-      done();
+      done('error: the format is invalid');
     } catch (err) {
-      expect(err.message).to.eql('The format specified is unknown');
+      expect(err.message).to.eql('Invalid format');
       done();
     }
   });

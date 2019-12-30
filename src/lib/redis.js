@@ -5,19 +5,23 @@ const _ = require('lodash');
 const newInstance = (connection) => {
   const redis = new Redis(connection);
 
-  const getValue = (key) => redis.get(key);
+  const functions = {
+    getItem: async (key, format = 'plain') => {
+      const item = await redis.get(key);
+      if (_.isEmpty(item)) return null;
 
-  const fn = {
-    getValue,
-
-    getValueJSON: async (key) => {
-      const result = await getValue(key);
-      if (_.isEmpty(result)) return null;
-      return parseJSON(result);
+      switch (format) {
+      case 'plain':
+        return item;
+      case 'json':
+        return parseJSON(item);
+      default:
+        throw new Error('Invalid format');
+      }
     },
   };
 
-  return fn;
+  return functions;
 };
 
 module.exports = newInstance;

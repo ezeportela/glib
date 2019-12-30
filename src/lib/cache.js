@@ -1,54 +1,36 @@
-const LocalStorage = require('node-localstorage').LocalStorage;
-const os = require('os');
-const storage = new LocalStorage(os.tmpdir());
-const conversions = require('../utils/conversions');
+const storage = require('./storage');
 const moment = require('moment');
 
 const cache = (collection) => {
-  const createKeyName = (key) => `${collection}_${key}`;
+  const _storage = storage(collection);
 
-  const setItem = (key, content, expiration) => {
-    storage.setItem(createKeyName(key), conversions.stringifyJSON({
-      content,
-      expires: moment().add(...expiration),
-    }));
-  };
+  const functions = {
+    setItem: (key, content, expiration) => {
+      _storage.setItem(key, {
+        content,
+        expires: moment().add(...expiration),
+      });
+    },
 
-  const getItem = (key) => {
-    const item = conversions.parseJSON(storage.getItem(createKeyName(key)));
+    getItem: (key) => {
+      const item = _storage.getItem(key);
 
-    if (!item) return null;
+      if (!item) return null;
 
-    if (moment() > moment(item.expires)) {
-      removeItem(key);
-      return null;
-    }
-
-    return item.content;
-  };
-
-  const removeItem = (key, exact = false) =>
-    storage.removeItem(exact ? key : createKeyName(key));
-
-  const clear = () => {
-    for (let i = 0; i < storage.length; i++) {
-      const key = storage.key(i);
-
-      const pattern = RegExp(`${collection}_.*`, 'g');
-      if (key.match(pattern)) {
-        removeItem(key, true);
+      if (moment() > moment(item.expires)) {
+        _storage.removeItem(key);
+        return null;
       }
-    }
+
+      return item.content;
+    },
+
+    removeItem: (key) => _storage.removeItem(key),
+
+    clear: () => _storage.clear(),
   };
 
-  const fn = {
-    setItem,
-    getItem,
-    removeItem,
-    clear,
-  };
-
-  return fn;
+  return functions;
 };
 
 module.exports = cache;
