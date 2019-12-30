@@ -1,6 +1,6 @@
 {
   "name": "@eportela/glib",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "A powerful tools library",
   "main": "index.js",
   "scripts": {

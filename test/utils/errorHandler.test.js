@@ -11,7 +11,7 @@ const {createError, handleError, resolveError} = errorHandler;
 
 const {resMock} = require('../mocks/utils.mock');
 
-describe('Throw Error Handler', () => {
+describe('test utils > error handler', () => {
   it('create Error', (done) => {
     try {
       createError('invalid_data');

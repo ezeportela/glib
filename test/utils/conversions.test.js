@@ -1,6 +1,6 @@
 const {stringifyJSON, parseJSON, parseResponse} = require('../../src/utils/conversions');
 
-describe('test utils conversions', () => {
+describe('test utils > conversions', () => {
   it('test stringifyJSON & parseJSON', () => {
     const expected = {one: 1, two: 2};
     const stringify = stringifyJSON(expected);
