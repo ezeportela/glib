@@ -6,7 +6,8 @@ const paths = {
   jsonTest: '/test/common/test.json',
   yamlTest: '/test/common/test.yaml',
   plainTest: '/test/common/test.txt',
-  dirTest: '/test/common/.tests',
+  writeDirTest: '/test/common/.tests',
+  readDirTest: '/test/data/redis',
 };
 
 describe('test common > files', () => {
@@ -83,11 +84,19 @@ describe('test common > files', () => {
   });
 
   it('test make a dir', (done) => {
-    const dirPath = paths.dirTest;
+    const dirPath = paths.writeDirTest;
     files.makeDir(dirPath);
     const exists = files.existsFile(dirPath);
     expect(exists).to.be.true;
     files.removeDir(dirPath);
+    done();
+  });
+
+  it('test read dir', (done) => {
+    const dirPath = paths.readDirTest;
+    const expected = ['ping.txt', 'test.json'];
+    const dir = files.readDir(dirPath);
+    expect(dir).eql(expected);
     done();
   });
 });

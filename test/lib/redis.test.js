@@ -5,10 +5,13 @@ const redis = proxyquire('../../src/lib/redis', {
 });
 
 describe('test lib > redis', () => {
-  it('test get value', (done) => {
-    redis().getItem('ping')
+  it('test set & get plain value', (done) => {
+    const _redis = redis();
+    const key = 'ping';
+    const expected = 'pong';
+    _redis.setItem(key, expected);
+    _redis.getItem(key)
       .then((result) => {
-        const expected = 'pong';
         expect(result).eql(expected);
         done();
       })
@@ -17,14 +20,15 @@ describe('test lib > redis', () => {
       });
   });
 
-  it('test get value json', (done) => {
-    redis().getItem('test', 'json')
+  it('test set & get json value', (done) => {
+    const _redis = redis();
+    const key = 'foo';
+    const expected = {
+      prop: 'bar',
+    };
+    _redis.setItem(key, expected, 'json');
+    _redis.getItem(key, 'json')
       .then((result) => {
-        const expected = {
-          name: 'Ezequiel',
-          lastname: 'Portela',
-          skills: ['nodejs'],
-        };
         expect(result).eql(expected);
         done();
       })
@@ -33,8 +37,10 @@ describe('test lib > redis', () => {
       });
   });
 
-  it('test get value json null value', (done) => {
-    redis().getItem('subscription', 'json')
+  it('test get not found value', (done) => {
+    const _redis = redis();
+    const key = 'test';
+    _redis.getItem(key, 'json')
       .then((result) => {
         expect(result).to.be.null;
         done();
@@ -44,13 +50,24 @@ describe('test lib > redis', () => {
       });
   });
 
+  it('test set value invalid format', (done) => {
+    try {
+      const _redis = redis();
+      _redis.setItem('foo', 'bar', 'csv');
+      done('error: the format is invalid');
+    } catch (error) {
+      expect(error.message).to.eql('Invalid format');
+      done();
+    }
+  });
+
   it('test get value invalid format', (done) => {
-    redis().getItem('test', 'csv')
+    const _redis = redis();
+    _redis.getItem('foo', 'csv')
       .then((result) => {
         done('error: the format is invalid');
       })
       .catch((error) => {
-        console.log('pass here');
         expect(error.message).to.eql('Invalid format');
         done();
       });
