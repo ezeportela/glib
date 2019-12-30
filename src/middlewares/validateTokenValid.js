@@ -1,4 +1,4 @@
-const {createError, errorHandler} = require('../utils/errorHandler');
+const {createError, handleError} = require('../utils/errorHandler');
 const jwtDecode = require('jwt-decode');
 const _ = require('lodash');
 
@@ -15,9 +15,9 @@ const validateTokenValid = (audiences) => (req, res, next) => {
         audience === decoded.aud,
     )) createError('unauthorized');
 
-    next();
+    return next();
   } catch (err) {
-    errorHandler(err);
+    handleError(err);
   }
 };
 
