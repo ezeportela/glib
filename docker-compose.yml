@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mysql_db:
+    image: mysql:5.7.27
+    container_name: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - "33060:3306"
+    volumes:
+      - /home/eportela/.mysql-db-data:/var/lib/mysql
+
+  redis_db:
+    image: redis
+    container_name: redis_db
+    ports:
+      - "6379:6379"

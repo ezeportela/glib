@@ -1,6 +1,6 @@
 {
   "name": "@eportela/glib",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "A powerful tools library",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "mysql": "^2.17.1",
     "node-localstorage": "^2.1.5"
   },
   "devDependencies": {
