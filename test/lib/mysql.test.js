@@ -1,30 +1,66 @@
-// const proxyquire = require('proxyquire');
+const proxyquire = require('proxyquire');
 
-// const mysql = proxyquire('../../src/lib/mysql', {
-//   'mysql': require('../mocks/mysql.mock'),
-// });
+const mysql = proxyquire('../../src/lib/mysql', {
+  'mysql': require('../mocks/mysql.mock'),
+});
 
-// const check = (done) => {
-//   mysql()
-//     .then(async (instance) => {
-//       try {
-//         const key = 'foo';
-//         const expected = 'bar';
-//         await instance.executeQuery('set', ['set', key, expected]);
-//         const result = await instance.executeQuery('get', ['get', key]);
-//         expect(result).eql(expected);
-//         done();
-//       } catch (err) {
-//         done(err);
-//       }
-//     })
-//     .catch((error) => {
-//       done(error);
-//     });
-// };
+describe('test lib > mysql', () => {
+  let instance;
 
-// describe('test lib > mysql', () => {
-//   it('test query method', (done) => {
-//     check(done);
-//   });
-// });
+  it('test get instance', async () => {
+    instance = await mysql();
+    expect(instance).to.be.an('object');
+    expect(instance).to.have.property('executeQuery');
+    expect(instance).to.have.property('executeProcedure');
+    expect(instance).to.have.property('close');
+  });
+
+  it('test query set', async () => {
+    try {
+      const key = 'foo';
+      const expected = 'bar';
+      const result = await instance.executeQuery('set', ['set', key, expected]);
+      expect(result).eql(key);
+    } catch (err) {
+      expect(err).to.be.undefined;
+    }
+  });
+
+  it('test query without params', async () => {
+    try {
+      const result = await instance.executeQuery('set');
+      expect(result).eql('set');
+    } catch (err) {
+      expect(err).to.be.undefined;
+    }
+  });
+
+  it('test procedure get', async () => {
+    try {
+      const key = 'foo';
+      const expected = 'bar';
+      const result = await instance.executeProcedure('get', ['get', key]);
+      expect(result).eql(expected);
+    } catch (err) {
+      expect(err).to.be.undefined;
+    }
+  });
+
+  it('test procedure without params', async () => {
+    try {
+      const result = await instance.executeProcedure('set');
+      expect(result).eql('call set');
+    } catch (err) {
+      expect(err).to.be.undefined;
+    }
+  });
+
+  it('test close', async () => {
+    try {
+      const result = await instance.close();
+      expect(result).to.be.true;
+    } catch (err) {
+      expect(err).to.be.undefined;
+    }
+  });
+});
