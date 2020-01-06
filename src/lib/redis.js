@@ -35,6 +35,10 @@ const newInstance = (connection) => {
 
       return redis.set(key, value);
     },
+
+    removeItem: (key) => {
+      return redis.unlink(key);
+    },
   };
 
   return functions;
