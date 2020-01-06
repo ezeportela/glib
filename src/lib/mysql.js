@@ -1,17 +1,32 @@
 const {createConnection} = require('mysql');
-const {promisify} = require('util');
 
-const newInstance = async (connection) => {
+const newInstance = (connection) => {
   const mysql = createConnection(connection);
-  const query = await promisify(mysql.query.bind(mysql));
-  const end = await promisify(mysql.end.bind(mysql));
+
+  const executeQuery = (sql, params = []) => {
+    return new Promise((resolve, reject) => {
+      mysql.query(sql, params, (err, rows) => {
+        if (err) return reject(err);
+        resolve(rows);
+      });
+    });
+  };
 
   const functions = {
-    executeQuery: (sql, params = []) => query(sql, params),
+    executeQuery,
 
-    executeProcedure: (name, params = []) => query(`call ${name}`, params),
+    executeProcedure(procName, params) {
+      return executeQuery(`call ${procName}`, params);
+    },
 
-    close: () => end(),
+    close() {
+      return new Promise((resolve, reject) => {
+        mysql.end((err) => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
+    },
   };
 
   return functions;

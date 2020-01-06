@@ -8,7 +8,8 @@ describe('test lib > mysql', () => {
   let instance;
 
   it('test get instance', async () => {
-    instance = await mysql();
+    instance = mysql();
+    console.log(instance);
     expect(instance).to.be.an('object');
     expect(instance).to.have.property('executeQuery');
     expect(instance).to.have.property('executeProcedure');
@@ -55,12 +56,12 @@ describe('test lib > mysql', () => {
     }
   });
 
-  it('test close', async () => {
-    try {
-      const result = await instance.close();
-      expect(result).to.be.true;
-    } catch (err) {
-      expect(err).to.be.undefined;
-    }
-  });
+  // it('test close', async () => {
+  //   try {
+  //     const result = await instance.close();
+  //     expect(result).to.be.true;
+  //   } catch (err) {
+  //     expect(err).to.be.undefined;
+  //   }
+  // });
 });
