@@ -1,29 +1,29 @@
-const cache = require('../../src/lib/cache');
+const CacheService = require('../../src/lib/cache.service');
 
 describe('test lib > cache', () => {
   it('test get value', (done) => {
     const expected = 'one';
-    const _cache = cache('test');
-    _cache.clear();
-    _cache.setItem('foo', 'one', [1, 'hours']);
-    const result = _cache.getItem('foo');
+    const instance = new CacheService('test');
+    instance.clear();
+    instance.setItem('foo', 'one', [1, 'hours']);
+    const result = instance.getItem('foo');
     expect(result).eql(expected);
-    _cache.removeItem('foo');
+    instance.removeItem('foo');
     done();
   });
 
   it('test get value expire', () => {
-    const _cache = cache('test');
-    _cache.clear();
-    _cache.setItem('bar', 'two', [-1, 'hours']);
-    const result = _cache.getItem('bar');
+    const instance = new CacheService('test');
+    instance.clear();
+    instance.setItem('bar', 'two', [-1, 'hours']);
+    const result = instance.getItem('bar');
     expect(result).to.be.null;
   });
 
   it('test get value not found', () => {
-    const _cache = cache('test');
-    _cache.clear();
-    const result = _cache.getItem('foo');
+    const instance = new CacheService('test');
+    instance.clear();
+    const result = instance.getItem('foo');
     expect(result).to.be.null;
   });
 });

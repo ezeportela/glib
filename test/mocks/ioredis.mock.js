@@ -1,8 +1,8 @@
-const {storage} = require('../../lib');
+const {StorageService} = require('../../lib');
 
 class Redis {
   constructor() {
-    this.storage = storage('redis');
+    this.storage = new StorageService('redis');
   }
 
   async get(key) {

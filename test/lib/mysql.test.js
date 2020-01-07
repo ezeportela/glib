@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire');
 
-const mysql = proxyquire('../../src/lib/mysql', {
+const Service = proxyquire('../../src/lib/mysql.service', {
   'mysql': require('../mocks/mysql.mock'),
 });
 
@@ -8,8 +8,7 @@ describe('test lib > mysql', () => {
   let instance;
 
   it('test get instance', async () => {
-    instance = mysql();
-    console.log(instance);
+    instance = new Service();
     expect(instance).to.be.an('object');
     expect(instance).to.have.property('executeQuery');
     expect(instance).to.have.property('executeProcedure');
@@ -50,18 +49,18 @@ describe('test lib > mysql', () => {
   it('test procedure without params', async () => {
     try {
       const result = await instance.executeProcedure('set');
-      expect(result).eql('call set');
+      expect(result).eql('call set()');
     } catch (err) {
       expect(err).to.be.undefined;
     }
   });
 
-  // it('test close', async () => {
-  //   try {
-  //     const result = await instance.close();
-  //     expect(result).to.be.true;
-  //   } catch (err) {
-  //     expect(err).to.be.undefined;
-  //   }
-  // });
+  it('test close', async () => {
+    try {
+      const result = await instance.close();
+      expect(result).to.be.true;
+    } catch (err) {
+      expect(err).to.be.undefined;
+    }
+  });
 });

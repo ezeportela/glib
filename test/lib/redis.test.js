@@ -1,16 +1,16 @@
 const proxyquire = require('proxyquire');
 
-const redis = proxyquire('../../src/lib/redis', {
+const RedisService = proxyquire('../../src/lib/redis.service', {
   'ioredis': require('../mocks/ioredis.mock'),
 });
 
 describe('test lib > redis', () => {
   it('test set & get plain value', (done) => {
-    const _redis = redis();
+    const redis = new RedisService();
     const key = 'ping';
     const expected = 'pong';
-    _redis.setItem(key, expected);
-    _redis.getItem(key)
+    redis.setItem(key, expected);
+    redis.getItem(key)
       .then((result) => {
         expect(result).eql(expected);
         done();
@@ -21,13 +21,13 @@ describe('test lib > redis', () => {
   });
 
   it('test set & get json value', (done) => {
-    const _redis = redis();
+    const redis = new RedisService();
     const key = 'foo';
     const expected = {
       prop: 'bar',
     };
-    _redis.setItem(key, expected, 'json');
-    _redis.getItem(key, 'json')
+    redis.setItem(key, expected, 'json');
+    redis.getItem(key, 'json')
       .then((result) => {
         expect(result).eql(expected);
         done();
@@ -38,9 +38,9 @@ describe('test lib > redis', () => {
   });
 
   it('test get not found value', (done) => {
-    const _redis = redis();
+    const redis = new RedisService();
     const key = 'test';
-    _redis.getItem(key, 'json')
+    redis.getItem(key, 'json')
       .then((result) => {
         expect(result).to.be.null;
         done();
@@ -52,8 +52,8 @@ describe('test lib > redis', () => {
 
   it('test set value invalid format', (done) => {
     try {
-      const _redis = redis();
-      _redis.setItem('foo', 'bar', 'csv');
+      const redis = new RedisService();
+      redis.setItem('foo', 'bar', 'csv');
       done('error: the format is invalid');
     } catch (error) {
       expect(error.message).to.eql('Invalid format');
@@ -62,8 +62,8 @@ describe('test lib > redis', () => {
   });
 
   it('test get value invalid format', (done) => {
-    const _redis = redis();
-    _redis.getItem('foo', 'csv')
+    const redis = new RedisService();
+    redis.getItem('foo', 'csv')
       .then((result) => {
         done('error: the format is invalid');
       })

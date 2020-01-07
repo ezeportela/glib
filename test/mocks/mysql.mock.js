@@ -1,7 +1,7 @@
-const {storage} = require('../../lib');
+const {StorageService} = require('../../lib');
 
 const createConnection = (connection) => {
-  const _storage = storage('mysql');
+  const _storage = new StorageService('mysql');
 
   return {
     query: async (sql, params, callback) => {
