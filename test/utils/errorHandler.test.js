@@ -3,6 +3,7 @@ const errorHandler = proxyquire('../../utils/errorHandler', {
   './requireDependency': (text) => ({
     errors: [
       {code: 'unauthorized'},
+      {code: 'invalid_data'},
     ],
   }),
 });

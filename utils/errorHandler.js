@@ -8,6 +8,9 @@ const getError = (err) => {
 
   if (row) return row;
 
+  err.code = 'internal_server_error';
+  err.message = 'Internal Server Error';
+  err.severity = 'HIGH';
   return err;
 };
 
@@ -27,13 +30,21 @@ const handleError = (err, defaultError) => {
   throw error;
 };
 
-const resolveError = (err, res) => {
-  err = getError(err);
+const resolveError = (err, res, isProd = true, {code, severity} = {}) => {
+  if (isProd) {
+    err = getError(err);
 
-  const {status} = err;
+    const {status} = err;
 
-  delete err.status;
-  res.status(status || 500).send(err);
+    delete err.status;
+    res.status(status || 500).send(err);
+  } else {
+    const error = new Error();
+    error.code = code;
+    error.message = err.message;
+    error.severity = severity;
+    throw error;
+  }
 };
 
 module.exports = {
