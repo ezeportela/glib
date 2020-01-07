@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire');
 
-const RedisService = proxyquire('../../src/lib/redis.service', {
+const RedisService = proxyquire('../../lib/redis.service', {
   'ioredis': require('../mocks/ioredis.mock'),
 });
 

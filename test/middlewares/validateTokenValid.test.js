@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const proxyquire = require('proxyquire');
-const errorHandler = proxyquire('../../src/utils/errorHandler', {
+const errorHandler = proxyquire('../../utils/errorHandler', {
   './requireDependency': (text) => ({
     errors: [
       {code: 'unauthorized'},
@@ -8,7 +8,7 @@ const errorHandler = proxyquire('../../src/utils/errorHandler', {
   }),
 });
 
-const validateToken = proxyquire('../../src/middlewares/validateTokenValid', {
+const validateToken = proxyquire('../../middlewares/validateTokenValid', {
   '../utils/errorHandler': errorHandler,
 });
 

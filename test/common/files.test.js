@@ -1,4 +1,4 @@
-const files = require('../../src/common/files');
+const files = require('../../common/files');
 
 const paths = {
   plainSrc: '/test/data/redis/ping.txt',
@@ -13,7 +13,7 @@ const paths = {
 describe('test common > files', () => {
   it('test full & relative paths', (done) => {
     const fullPathFile = files.readFile(paths.jsonSrc, {format: 'plain'});
-    const relativePathFile = files.readFile('/../../test/data/redis/test.json', {fullPath: false, format: 'plain'});
+    const relativePathFile = files.readFile('/../test/data/redis/test.json', {fullPath: false, format: 'plain'});
     expect(fullPathFile).to.eql(relativePathFile);
     done();
   });

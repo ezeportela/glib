@@ -1,6 +1,6 @@
-const conversions = require('../src/utils/conversions');
-const errorHandler = require('../src/utils/errorHandler');
-const requireDependency = require('../src/utils/requireDependency');
+const conversions = require('./conversions');
+const errorHandler = require('./errorHandler');
+const requireDependency = require('./requireDependency');
 
 module.exports = {
   conversions,

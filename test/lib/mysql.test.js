@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire');
 
-const Service = proxyquire('../../src/lib/mysql.service', {
+const Service = proxyquire('../../lib/mysql.service', {
   'mysql': require('../mocks/mysql.mock'),
 });
 

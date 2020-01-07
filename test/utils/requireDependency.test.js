@@ -1,9 +1,9 @@
-const requireDependency = require('../../src/utils/requireDependency');
+const requireDependency = require('../../utils/requireDependency');
 
 describe('test utils > requireDependency', () => {
   it('test requireDependency function', () => {
-    const expected = require('../../src/utils/conversions');
-    const result = requireDependency('/src/utils/conversions');
+    const expected = require('../../utils/conversions');
+    const result = requireDependency('/utils/conversions');
     expect(result).to.eql(expected);
   });
 });

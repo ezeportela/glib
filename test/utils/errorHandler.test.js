@@ -1,5 +1,5 @@
 const proxyquire = require('proxyquire');
-const errorHandler = proxyquire('../../src/utils/errorHandler', {
+const errorHandler = proxyquire('../../utils/errorHandler', {
   './requireDependency': (text) => ({
     errors: [
       {code: 'unauthorized'},

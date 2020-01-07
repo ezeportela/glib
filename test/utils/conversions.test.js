@@ -1,4 +1,4 @@
-const {stringifyJSON, parseJSON, parseResponse} = require('../../src/utils/conversions');
+const {stringifyJSON, parseJSON, parseResponse} = require('../../utils/conversions');
 
 describe('test utils > conversions', () => {
   it('test stringifyJSON & parseJSON', () => {

@@ -1,6 +1,6 @@
-const entityValidationHandler = require('../src/middlewares/entityValidationHandler');
-const validateTokenProps = require('../src/middlewares/validateTokenProps');
-const validateTokenValid = require('../src/middlewares/validateTokenValid');
+const entityValidationHandler = require('./entityValidationHandler');
+const validateTokenProps = require('./validateTokenProps');
+const validateTokenValid = require('./validateTokenValid');
 
 module.exports = {
   entityValidationHandler,

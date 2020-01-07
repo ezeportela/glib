@@ -1,4 +1,4 @@
-const CacheService = require('../../src/lib/cache.service');
+const CacheService = require('../../lib/cache.service');
 
 describe('test lib > cache', () => {
   it('test get value', (done) => {

@@ -1,4 +1,4 @@
-const {StorageService} = require('../../lib');
+const StorageService = require('../../lib/storage.service');
 
 const createConnection = (connection) => {
   const _storage = new StorageService('mysql');

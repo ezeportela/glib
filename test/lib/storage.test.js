@@ -1,4 +1,4 @@
-const StorageService = require('../../src/lib/storage.service');
+const StorageService = require('../../lib/storage.service');
 
 describe('test lib > storage', () => {
   it('test get item', () => {
