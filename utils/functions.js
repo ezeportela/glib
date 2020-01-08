@@ -1,7 +1,9 @@
-const originIsInCORS = (req, cors) => {
-  if (cors.length == 0) return true;
+const originIsInCORS = (req, res, cors) => {
+  if (cors.length == 0) return;
 
-  return cors.some((url) => url === req.headers.origin);
+  const url = cors.filter((url) => url === req.headers.origin);
+
+  if (url) res.set('Access-Control-Allow-Origin', cors);
 };
 
 module.exports = {
