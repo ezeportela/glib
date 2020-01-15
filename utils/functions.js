@@ -10,7 +10,7 @@ const originIsInCORS = (req, res, cors) => {
 
 const createResponse = ({success, err, data, isProd, details}) => ({
   success,
-  error: err ? getError(err) : null,
+  error: err ? getError(err.code) : null,
   data,
   details: isProd ? details : null,
 });
