@@ -8,12 +8,25 @@ const originIsInCORS = (req, res, cors) => {
   if (url) res.set('Access-Control-Allow-Origin', url);
 };
 
-const createResponse = ({success, err, data, isProd, details}) => ({
-  success,
-  error: err ? getError(err.code) : null,
-  data,
-  details: isProd ? details : null,
-});
+const createResponse = ({success, err, data, isProd, details}) => {
+  const result = {success, data};
+
+  if (isProd) {
+    Object.assign(result, {
+      ...result,
+      details,
+    });
+  }
+
+  if (err && err.code) {
+    Object.assign(result, {
+      ...result,
+      error: getError(err.code),
+    });
+  }
+
+  return result;
+};
 
 module.exports = {
   originIsInCORS,
