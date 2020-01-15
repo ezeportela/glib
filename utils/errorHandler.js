@@ -33,11 +33,13 @@ const handleError = (err, defaultError) => {
 const resolveError = (err, res, isProd = true, {code, severity} = {}) => {
   if (isProd) {
     err = getError(err);
-
     const {status} = err;
 
-    delete err.status;
-    res.status(status || 500).send(err);
+    const error = new Error();
+    const {code, message, severity} = err;
+    error.success = false;
+    error.error = {code, message, severity};
+    res.status(status || 500).send(error);
   } else {
     const error = new Error();
     error.success = false;
