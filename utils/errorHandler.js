@@ -40,9 +40,8 @@ const resolveError = (err, res, isProd = true, {code, severity} = {}) => {
     res.status(status || 500).send(err);
   } else {
     const error = new Error();
-    error.code = code;
-    error.message = err.message;
-    error.severity = severity;
+    error.success = false;
+    error.error = {code, message: err.message, severity};
     throw error;
   }
 };

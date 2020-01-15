@@ -51,7 +51,7 @@ describe('test utils > error handler', () => {
       const error = Error('the cuit format is invalid');
       resolveError(error, resMock, false, {code: 'test_error', severity: 'HIGH'});
     } catch (err) {
-      expect(err.message).to.eql('the cuit format is invalid');
+      expect(err.error.message).to.eql('the cuit format is invalid');
       done();
     }
   });
