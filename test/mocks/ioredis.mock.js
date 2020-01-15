@@ -12,6 +12,10 @@ class Redis {
   async set(key, value) {
     return this.storage.setItem(key, value);
   }
+
+  async disconnect() {
+
+  }
 }
 
 module.exports = Redis;
