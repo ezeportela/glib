@@ -30,6 +30,7 @@ describe('test lib > redis', () => {
     redis.getItem(key, 'json')
       .then((result) => {
         expect(result).eql(expected);
+        redis.close();
         done();
       })
       .catch((error) => {
@@ -71,5 +72,19 @@ describe('test lib > redis', () => {
         expect(error.message).to.eql('Invalid format');
         done();
       });
+  });
+
+  it('test set & remove json value', async () => {
+    try {
+      const redis = new RedisService();
+      const key = 'foo';
+      const expected = 'bar';
+      redis.setItem(key, expected, 'plain');
+      await redis.removeItem(key);
+      const value = await redis.getItem(key, 'json');
+      expect(value).to.be.null;
+    } catch (err) {
+      expect(err).to.be.null;
+    }
   });
 });

@@ -13,6 +13,10 @@ class Redis {
     return this.storage.setItem(key, value);
   }
 
+  async unlink(key) {
+    this.storage.removeItem(key);
+  }
+
   async disconnect() {
 
   }
