@@ -14,7 +14,7 @@ const createResponse = ({success, err, data}) => {
   if (err && err.code) {
     Object.assign(result, {
       ...result,
-      error: getError(err.code),
+      error: getError(err),
     });
   }
 
