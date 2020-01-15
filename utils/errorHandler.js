@@ -48,6 +48,7 @@ const resolveError = (err, res, isProd = true, {code, severity} = {}) => {
 };
 
 module.exports = {
+  getError,
   createError,
   handleError,
   resolveError,
