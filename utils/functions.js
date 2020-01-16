@@ -13,8 +13,15 @@ const createResponse = ({success, err, data}) => {
 
   Object.assign(result, {
     ...result,
-    error: err & err.code ? getError(err) : null,
+    error: err ? err : null,
   });
+
+  if (err && err.code) {
+    Object.assign(result, {
+      ...result,
+      error: getError(err),
+    });
+  }
 
   return result;
 };
