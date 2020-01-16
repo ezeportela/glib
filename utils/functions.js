@@ -11,12 +11,10 @@ const originIsInCORS = (req, res, cors) => {
 const createResponse = ({success, err, data}) => {
   const result = {success, data};
 
-  if (err && err.code) {
-    Object.assign(result, {
-      ...result,
-      error: getError(err),
-    });
-  }
+  Object.assign(result, {
+    ...result,
+    error: err & err.code ? getError(err) : null,
+  });
 
   return result;
 };
