@@ -19,7 +19,7 @@ const createReqMock = (payload, params) => {
 
 describe('test utils > validateTokenProps', () => {
   it('Token B2B', () => {
-    const result = validateTokenProps('params', ['test'], ['id'])(
+    const result = validateTokenProps('params', 'test', ['id'])(
       createReqMock({gty: 'client-credentials'}),
       null,
       () => true,
@@ -29,7 +29,7 @@ describe('test utils > validateTokenProps', () => {
 
   it('Token B2C is valid', () => {
     try {
-      const result = validateTokenProps('params', ['idx', 'id'], ['id'])(
+      const result = validateTokenProps('params', 'id', ['id'])(
         createReqMock({id: '1'}, {id: '1'}),
         null,
         () => true,
@@ -44,10 +44,10 @@ describe('test utils > validateTokenProps', () => {
     try {
       const result = validateTokenProps(
         'params',
-        ['cuit', 'identity'],
+        'identity',
         ['dni', 'sub'],
-        (text, colName) => {
-          return colName == 'identity' ? `auth0|${text}` : text;
+        (text, claim) => {
+          return claim == 'sub' ? `auth0|${text}` : text;
         },
       )(
         createReqMock({sub: 'auth0|NT30'}, {identity: 'NT30'}),
@@ -62,7 +62,7 @@ describe('test utils > validateTokenProps', () => {
 
   it('Token B2C is not valid', () => {
     try {
-      const result = validateTokenProps('params', ['id'], ['num'])(
+      const result = validateTokenProps('params', 'id', ['num'])(
         createReqMock({id: '1'}, {id: '1'}),
         null,
         () => true,
@@ -77,7 +77,7 @@ describe('test utils > validateTokenProps', () => {
     try {
       const result = validateTokenProps(
         'params',
-        ['cuit', 'identity'],
+        'identity',
         ['dni', 'sub'],
         (text, colName) => {
           return colName == 'identity' ? `auth0|${text}` : text;
